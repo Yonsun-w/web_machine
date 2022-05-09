@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ExpertMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.ExpertVo">
+        <id column="phone" property="phone" />
+        <result column="name" property="name" />
+        <result column="school" property="school" />
+        <result column="role" property="role" />
+        <result column="email" property="email" />
+        <result column="politic" property="politic" />
+        <result column="pwd" property="pwd" />
+        <result column="sex" property="sex" />
+        <result column="school_type" property="school_type"/>
+        <result column="flag" property="flag"/>
+        <result column="province" property="province"/>
+        <result column="unit" property="unit"/>
+
+        <result column="major1" property="major1"/>
+        <result column="major2" property="major2"/>
+        <result column="major3" property="major3"/>
+        <result column="course1" property="course1"/>
+        <result column="course2" property="course2"/>
+        <result column="course3" property="course3"/>
+
+        <result column="job1" property="job1"/>
+        <result column="job2" property="job2"/>
+        <result column="nation" property="nation"/>
+        <result column="birth" property="birth"/>
+    </resultMap>
+
+   <delete id="deleteAll" >DELETE FROM t_expert</delete>
+
+    <select id="fuzzySearch" resultType="com.example.vo.ExpertVo">
+        select * from  t_expert
+        where name like #{name}"%"
+            limit 0,10
+    </select>
+    <select id="listByFlag" resultType="com.example.vo.ExpertVo">
+        select * from t_expert
+        where flag = #{flag}
+
+    </select>
+<select id="listNoPwd" resultType="com.example.vo.ExpertVo">
+    select * from t_expert
+where pwd = '' or pwd is null
+</select>
+
+
+<select id="selectBymajor" resultType="com.example.vo.ExpertVo">
+    select *
+    from t_expert
+    where (
+            course1 like "%"#{major}"%"
+        or course2 like  "%"#{major}"%"
+            or course3 like  "%"#{major}"%"
+           or
+         major1 like "%"#{major}"%"
+        or major2 like  "%"#{major}"%"
+        or major3 like  "%"#{major}"%"
+        )
+      and school_type like "%"#{type}"%"  and flag = '0'
+     limit 0,#{size}
+</select>
+
+    <select id="selectLocalBymajor" resultType="com.example.vo.ExpertVo">
+        select * from t_expert where
+               (
+                       course1 like "%"#{major}"%"
+        or course2 like  "%"#{major}"%"
+                       or course3 like  "%"#{major}"%"
+                       or
+                       major1 like "%"#{major}"%"
+                       or major2 like  "%"#{major}"%"
+                       or major3 like  "%"#{major}"%")
+                and   school_type not like '%中央高校%' and flag = 0
+limit 0,#{size}
+    </select>
+
+
+
+    <select id="selectBymajorAvoid" resultType="com.example.vo.ExpertVo">
+        select * from t_expert where
+            (
+                    course1 like "%"#{major}"%"
+        or course2 like  "%"#{major}"%"
+                    or course3 like  "%"#{major}"%"
+                    or
+                    major1 like "%"#{major}"%"
+                    or major2 like  "%"#{major}"%"
+                    or major3 like  "%"#{major}"%" )
+                                 and school_type  like "%"#{type}"%"  and flag = 0
+                                 and school not in
+                                     (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and  school not in
+                                   (select unit from t_book where flag = #{id})
+            limit 0,#{size}
+    </select>
+
+    <select id="selectLocalBymajorAvoid" resultType="com.example.vo.ExpertVo">
+        select * from t_expert where
+            (
+                    course1 like "%"#{major}"%"
+        or course2 like  "%"#{major}"%"
+                    or course3 like  "%"#{major}"%"
+                    or
+                    major1 like "%"#{major}"%"
+                    or major2 like  "%"#{major}"%"
+                    or major3 like  "%"#{major}"%")
+                                 and school_type  not like '%中央高校%'  and flag = 0
+                                 and school not in
+                                     (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and  school not in
+                                   (select unit from t_book where flag = #{id})
+            limit 0,#{size}
+
+
+    </select>
+
+<update id="deleteAllgroup">
+
+    update t_expert
+    set flag = 0
+    where
+      flag  = #{flag}
+
+
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="selectByarea" resultType="com.example.vo.ExpertVo">
+        select *
+        from t_expert
+        where (
+            course1 like "%"#{area}"%"
+            or course2 like "%"#{area}"%"
+            or course3 like "%"#{area}"%"
+            )
+          and school_type like "%"#{type}"%" and flag = '0'
+     limit 0,#{size}
+    </select>
+
+    <select id="selectLocalByArea" resultType="com.example.vo.ExpertVo">
+        select * from t_expert where
+            (
+                 course1 like "%"#{area}"%"
+                 or course2 like "%"#{area}"%"
+                  or course3 like "%"#{area}"%")
+                 and   school_type not like '%中央高校%' and flag = 0
+            limit 0,#{size}
+    </select>
+
+
+
+    <select id="selectByAreaAvoid" resultType="com.example.vo.ExpertVo">
+        select * from t_expert where
+            (
+
+                    course1 like "%"#{area}"%"
+                    or course2 like  "%"#{area}"%"
+                    or course3 like  "%"#{area}"%" )
+                                 and school_type  like "%"#{type}"%"  and flag = 0
+                                 and school not in
+                                     (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and unit not in
+                                   (select unit from t_book where flag = #{id})
+                                 and  school not in
+                                   (select unit from t_book where flag = #{id})
+            limit 0,#{size}
+    </select>
+
+    <select id="selectLocalByAreaAvoid" resultType="com.example.vo.ExpertVo">
+        select *
+        from t_expert
+        where (
+                course1 like "%"#{area}"%"
+                    or course2 like  "%"#{area}"%"
+                or course3 like "%" #{area}"%")
+          and school_type not like '%中央高校%'
+          and flag = 0
+          and school not in
+              (select unit from t_book where flag = #{id})
+
+          and school not in
+              (select unit from t_book where flag = #{id})
+
+          and (unit is null or
+               (unit not in
+
+                (select unit from t_book where flag = #{id})
+            and unit not in
+                (select unit from t_book where flag = #{id})
+            )
+            )
+            limit 0,#{size}
+
+
+    </select>
+
+
+
+
+
+<select id="export" resultType="com.example.vo.PoJoProjectVo">
+    select phone,name,flag from t_expert order by flag
+</select>
+
+
+
+
+
+
+</mapper>

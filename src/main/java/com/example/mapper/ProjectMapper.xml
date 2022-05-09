@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ProjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.ProjectVo">
+        <id column="id" property="id" />
+        <result column="area" property="area" />
+        <result column="type" property="type" />
+        <result column="major" property="major" />
+        <result column="center" property="center" />
+        <result column="local" property="local" />
+        <result column="flag" property="flag" />
+        <result column="avoid" property="avoid" />
+        <result column="expert" property="expert" />
+        <result column="needLocal" property="needLocal" />
+        <result column="needCenter" property="needCenter" />
+        <result column="needExpert" property="needExpert" />
+
+
+
+    </resultMap>
+
+    <select id="selectByName"
+            resultType="com.example.vo.ProjectVo">
+        select * from t_project where name = #{0}
+    </select>
+    <delete id="deleteAllbook">
+        delete from t_project where type = '教材'
+    </delete>
+    <delete id="deleteAllcourse">
+        delete from t_project where type = '课程'
+    </delete>
+
+    <select id="getMaxId" resultType="java.lang.String">
+      select MAX(id) from  t_project
+    </select>
+    <select id="selectNoExpert" resultType="com.example.vo.ProjectVo">
+        select id from t_project where needExpert != expert
+        <choose>
+            <when test="type!=''">
+                AND type = #{type}
+            </when>
+
+        </choose>
+
+
+
+    </select>
+
+    <select id="getAvoid" resultType="com.example.vo.ProjectVo">
+   select * from t_project where type = #{type}
+      and flag = '0' and (avoid = '是' or avoid is null )
+
+    </select>
+
+    <select id="getNoAvoid" resultType="com.example.vo.ProjectVo">
+        select * from t_project where type = #{type}
+                                  and flag = '0' and (avoid = '否' )
+
+    </select>
+
+    <delete id="Update">
+
+
+        delete from t_project where  id  not in
+                                     (select flag from t_book union  select  flag from t_course)
+    </delete>
+</mapper>

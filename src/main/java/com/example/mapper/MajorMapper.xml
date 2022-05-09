@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MajorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.MajorVo">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="academic" property="academic" />
+        <result column="academic_belong" property="academicBelong" />
+        <result column="major_class" property="majorClass" />
+        <result column="time" property="time" />
+    </resultMap>
+    <select id="fuzzySearch" resultType="com.example.vo.MajorVo">
+        select * from  t_major
+        where name like #{0}
+            limit 0,10
+    </select>
+<delete id="deleteAll">
+    delete from t_major;
+</delete>
+</mapper>

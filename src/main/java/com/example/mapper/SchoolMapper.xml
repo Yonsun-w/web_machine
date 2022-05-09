@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SchoolMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.SchoolVo">
+        <id column="name" property="name" />
+        <result column="id" property="id" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="type" property="type" />
+        <result column="belong_name" property="belong_name" />
+        <result column="belong" property="belong" />
+        <result column="dd" property="dd" />
+        <result column="layer" property="layer" />
+        <result column="school_layer" property="school_layer" />
+    </resultMap>
+  <select id="selectByName"
+          resultType="com.example.vo.SchoolVo">
+        select * from t_school where name = #{0}
+  </select>
+
+    <select id="fuzzySearch" resultType="com.example.vo.SchoolVo">
+        select * from  t_school
+        where name like #{0}
+            limit 0,10
+    </select>
+
+</mapper>

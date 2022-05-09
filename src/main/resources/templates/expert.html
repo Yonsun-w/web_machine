@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<hr/>
+<p>摸板下载</p>
+
+<hr/>
+<p>文件上传</p>
+<form action="/expert/import" method="POST" enctype="multipart/form-data">
+    文件：<input type="file" name="file"/>
+    <input type="submit"/>
+</form>
+
+<form action="/expert/delete" method="post">
+    专家手机号 <input name="id" type="text">
+    提交<input type="submit">
+</form>
+<hr/>
+</body>
+</html>

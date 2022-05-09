@@ -1,0 +1,78 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/t_test_mybatis?characterEncoding=utf8&useSSL=false&autoReconnect=true
+    username: root
+    password: 123456
+  profiles:
+    active: dev
+#mybatis-plus配置
+mybatis-plus:
+  #配置Mapper映射文件
+  mapper-locations: classpath:/src/main/java/com/example/mappers/*.xml
+  # 配置Mybatis数据返回类型别名（默认别名为类名）
+  type-aliases-package: com.example.vo
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: false
+#swagger是否打开接口
+swagger:
+  enabled: true
+
+
+#配置控制台打印日志Debug
+logging:
+  level:
+    com.jd.mapper: debug
+
+server:
+  port: 8081
+
+
+actable:
+  table:
+    auto: update
+  model:
+    pack: com.example.entity
+  database:
+    type: mysql
+
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.34.221.238:3306/review_tools?characterEncoding=utf8&useSSL=false&autoReconnect=true
+    username: root
+    password: 123456
+  profiles:
+    active: pro
+#mybatis-plus配置
+mybatis-plus:
+  #配置Mapper映射文件
+  mapper-locations: classpath:/src/main/java/com/example/mappers/*.xml
+  # 配置Mybatis数据返回类型别名（默认别名为类名）
+  type-aliases-package: com.example.vo
+  configuration:
+    # 自动驼峰命名
+    map-underscore-to-camel-case: false
+#swagger是否打开接口
+swagger:
+  enabled: true
+
+
+#配置控制台打印日志Debug
+logging:
+  level:
+    com.jd.mapper: debug
+
+server:
+  port: 8080
+
+
+actable:
+  table:
+    auto: update
+  model:
+    pack: com.example.entity
+  database:
+    type: mysql

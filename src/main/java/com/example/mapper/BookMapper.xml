@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BookMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.BookVo">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="unit" property="unit" />
+        <result column="author_major1" property="author_major1" />
+        <result column="author" property="author" />
+        <result column="type" property="type" />
+        <result column="copies" property="copies" />
+        <result column="student" property="student" />
+        <result column="major" property="major" />
+        <result column="publisher" property="publisher" />
+        <result column="version" property="version" />
+        <result column="area" property="area" />
+        <result column="flag" property="flag" />
+        <result column="Rarea" property="Rarea" />
+        <result column="authorUnit" property="authorUnit"/>
+        <result column="province" property="province"/>
+    </resultMap>
+
+
+    <select id="selectAllNoarea" resultType="com.example.vo.BookVo">
+        select *
+        from t_book alias
+        where area = '无'
+         or area ='' or area is null ;
+    </select>
+
+
+  <select id="selectByName" resultType="com.example.vo.BookVo">
+      select *
+      from t_book alias
+      where name = #{arg0}
+        and author_major1 = #{arg1}
+        and unit = #{arg2};
+ </select>
+    <select id="selectAllUngroup" resultType="com.example.vo.BookVo">
+        select *
+        from t_book
+        where flag = 0 order by unit ;
+    </select>
+
+
+<select id="selectAllgroup" resultType="com.example.vo.BookVo">
+select *
+from t_book
+where flag != 0 ;
+</select>
+    <select id="selectAllIdgroup" resultType="com.example.vo.BookVo">
+        select *
+        from t_book
+        where flag = #{flag} ;
+    </select>
+<update id="deleteAllIdgroup" >
+
+    update t_book set flag = 0  where  flag = #{flag}
+
+</update>
+    <update id="deleteAllgroup" >
+
+        update t_book set flag = 0  where  flag != 0
+
+    </update>
+
+
+
+    <select id="fuzzySearch" resultType="com.example.vo.BookVo">
+        select * from  t_book
+        where name like #{0}
+            limit 0,10
+    </select>
+
+
+<select id="getUnGroupArea" resultType="java.util.Map">
+
+    select distinct area from  t_book
+    where flag = 0
+
+</select>
+
+<select id="selectNoarea"  resultType="com.example.vo.BookVo">
+    select  * from t_book
+where flag = 0
+and area = #{0} order by unit
+</select>
+<delete id="deleteAll">
+    delete from t_book
+</delete>
+
+    <select id="areaGetMajor" resultType="java.lang.String">
+        select major
+        from t_book where area = #{area}
+        group by major desc  limit 0 ,1;
+    </select>
+
+
+    <select id="export" resultType="com.example.vo.PoJoProjectVo">
+        select id,name,flag from t_book
+        order by flag
+    </select>
+
+
+</mapper>

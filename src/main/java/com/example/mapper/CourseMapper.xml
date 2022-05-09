@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.vo.CourseVo">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="year" property="year" />
+        <result column="school" property="school" />
+        <result column="admin" property="admin" />
+        <result column="majorClass" property="majorClass" />
+        <result column="plat" property="plat" />
+        <result column="Cclass" property="Cclass" />
+        <result column="peopleMajor" property="peopleMajor" />
+        <result column="people" property="people" />
+        <result column="area" property="area" />
+        <result column="Rarea" property="Rarea" />
+        <result column="flag" property="flag" />
+
+    </resultMap>
+
+
+    <select id="fuzzySearch" resultType="com.example.vo.CourseVo">
+        select * from  t_course
+        where name like #{name}
+            limit 0,10
+    </select>
+    <delete id="deleteAll">
+      delete  from t_course
+    </delete>
+
+
+    <select id="selectNoarea"  resultType="com.example.vo.CourseVo">
+        select  * from t_course
+        where flag = 0
+          and area = #{area}
+    </select>
+
+
+    <select id="selectAllNoarea" resultType="com.example.vo.CourseVo">
+        select *
+        from t_course alias
+        where area = '无'
+           or area ='' or area is null ;
+    </select>
+    <select id="listByIdAll" resultType="com.example.vo.CourseVo">
+        select *
+        from t_course
+        where flag = #{flag}
+    </select>
+
+    <update id="deleteGroup">
+       update t_course set flag = 0  where  flag = #{flag}
+    </update>
+
+    <select id="getUnGroupArea"  resultType="java.util.Map">
+        select distinct area from  t_course
+        where flag = 0
+    </select>
+
+    <select id="areaGetMajor" resultType="java.lang.String">
+        select majorClass
+        from t_course where area = #{area}
+        group by majorClass desc  limit 0 ,1;
+    </select>
+<select id="export" resultType="com.example.vo.PoJoProjectVo">
+    select id,name,flag from  t_export order  by flag
+</select>
+
+</mapper>
